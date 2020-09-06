@@ -1,14 +1,23 @@
 import React, { Component } from "react";
 import CheckoutSummery from "../../components/Order/CheckoutSummary/CheckoutSummary";
+import ContactData from "../Checkout/ContactData/ContactData";
+import { Route } from "react-router-dom";
+
 class Checkout extends Component {
   state = {
-    ingredients: {
-      Salad: 1,
-      Bacon: 1,
-      Cheese: 1,
-      Meat: 1,
-    },
+    ingredients: {},
   };
+  componentDidMount() {
+    console.log(this.props);
+    const query = new URLSearchParams(this.props.location.search);
+    const ingredients = {};
+    for (let param of query.entries()) {
+      ingredients[param[0]] = +param[1];
+      // console.log(par);
+      console.log(ingredients);
+    }
+    this.setState({ ingredients: ingredients });
+  }
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };
@@ -17,11 +26,17 @@ class Checkout extends Component {
   };
   render() {
     return (
-      <CheckoutSummery
-        ingredients={this.state.ingredients}
-        checkoutCancelled={this.checkoutCancelledHandler}
-        checkoutContinued={this.checkoutContinuedHandler}
-      />
+      <div>
+        <CheckoutSummery
+          ingredients={this.state.ingredients}
+          checkoutCancelled={this.checkoutCancelledHandler}
+          checkoutContinued={this.checkoutContinuedHandler}
+        />
+        <Route
+          path={this.props.match.url + "/contact-data"}
+          component={ContactData}
+        />
+      </div>
     );
   }
 }
