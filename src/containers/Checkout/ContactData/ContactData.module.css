@@ -8,6 +8,10 @@
   padding: 10px;
   box-shadow: 0 4px 6px #ccc;
 }
+.ContactData form {
+  display: flex;
+  flex-direction: column;
+}
 .ContactData input {
   margin: 10px 0;
 }
