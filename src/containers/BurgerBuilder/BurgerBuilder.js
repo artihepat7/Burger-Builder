@@ -13,7 +13,6 @@ import * as burgerBuilderAction from "../../store/actions/index";
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
-    loading: false,
   };
 
   componentDidMount() {
@@ -42,6 +41,7 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
+    this.props.onPurchaseInit();
     this.props.history.push("/checkout");
   };
 
@@ -101,9 +101,9 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => {
   console.log(state);
   return {
-    ings: state.ingredients,
-    totalPrice: state.totalPrice,
-    error: state.error,
+    ings: state.burgerReducer.ingredients,
+    totalPrice: state.burgerReducer.totalPrice,
+    error: state.burgerReducer.error,
   };
 };
 
@@ -114,6 +114,7 @@ const mapDispatchToProps = (dispatch) => {
     onIngredientRemoved: (ingName) =>
       dispatch(burgerBuilderAction.removeIngredient(ingName)),
     onInitIngredient: () => dispatch(burgerBuilderAction.initIngredient()),
+    onPurchaseInit: () => dispatch(burgerBuilderAction.purchaseInit()),
   };
 };
 
