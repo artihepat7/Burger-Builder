@@ -14,19 +14,10 @@ class BurgerBuilder extends Component {
   state = {
     purchasing: false,
     loading: false,
-    error: false,
   };
 
   componentDidMount() {
-    // axios
-    //   .get("https://react-my-burger-d44ac.firebaseio.com/ingredients.json")
-    //   .then((response) => {
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.setState({ error: true });
-    //   });
+    this.props.onInitIngredient();
   }
 
   purchaseHandler = () => {
@@ -61,7 +52,7 @@ class BurgerBuilder extends Component {
     }
 
     let orderSummary = null;
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can't be loaded!</p>
     ) : (
       <Spinner />
@@ -109,7 +100,11 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = (state) => {
   console.log(state);
-  return { ings: state.ingredients, totalPrice: state.totalPrice };
+  return {
+    ings: state.ingredients,
+    totalPrice: state.totalPrice,
+    error: state.error,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -118,6 +113,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(burgerBuilderAction.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
       dispatch(burgerBuilderAction.removeIngredient(ingName)),
+    onInitIngredient: () => dispatch(burgerBuilderAction.initIngredient()),
   };
 };
 
