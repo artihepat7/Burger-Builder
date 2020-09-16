@@ -16,7 +16,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
         }
       );
     }
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
       axios.interceptors.request.eject(this.reqInterceptor);
       axios.interceptors.response.eject(this.resInterceptor);
     }
