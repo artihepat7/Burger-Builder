@@ -10,6 +10,7 @@ const navigationItems = (props) => {
       </NavigationItem>
 
       <NavigationItem link="/orders">Order</NavigationItem>
+      <NavigationItem link="/auth">Authentication</NavigationItem>
     </ul>
   );
 };
