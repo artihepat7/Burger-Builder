@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   tokenId: null,
   authId: null,
+
   error: null,
   loading: false,
 };
@@ -28,6 +29,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.error,
+
         loading: false,
         isSignUp: false,
       };

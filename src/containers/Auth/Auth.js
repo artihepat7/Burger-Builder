@@ -5,6 +5,7 @@ import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css";
 import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import { Redirect } from "react-router-dom";
 
 class Auth extends Component {
   state = {
@@ -120,12 +121,43 @@ class Auth extends Component {
 
     let errorMessage = null;
     if (this.props.error) {
-      errorMessage = <p>{this.props.error.message}</p>;
+      //alert(this.props.error.response.data.error.message); //error.response.data.error
+      errorMessage = this.props.error.response ? (
+        <p
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            fontSize: "20px",
+          }}
+        >
+          {this.props.error.response.data.error.message}
+        </p>
+      ) : (
+        <p
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            fontSize: "20px",
+          }}
+        >
+          {this.props.error.message}
+        </p>
+      );
+    }
+
+    let authRedirect = null;
+    if (this.props.isAuthenticated && !this.props.building) {
+      authRedirect = <Redirect to="/" />;
+    }
+    if (this.props.isAuthenticated && this.props.building) {
+      authRedirect = <Redirect to="/checkout" />;
     }
 
     return (
       <div className={classes.Controls}>
         {errorMessage}
+        {authRedirect}
+
         {form}
         <Button btnType="Danger" clicked={this.switchAuthModeHandler}>
           Switch to {this.state.isSignUp ? "Sign In" : "Sign Up"}
@@ -138,6 +170,9 @@ class Auth extends Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.authReducer.loading,
+
+    isAuthenticated: state.authReducer.tokenId != null,
+    building: state.burgerReducer.building,
     error: state.authReducer.error,
   };
 };
